@@ -1,43 +1,68 @@
-<table 
-    mat-table 
-    [dataSource]="data" 
-    class="mat-elevation-z8 w-full"
->
-
-    <!-- Id Column -->
-    <ng-container matColumnDef="id">
-        <th mat-header-cell *matHeaderCellDef> Id. </th>
-        <td mat-cell *matCellDef="let element; let i = index"> {{ i + 1 }} </td>
-    </ng-container>
-
-    <!-- Name Column -->
-    <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef> Name </th>
-        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-    </ng-container>
-
-    <!-- Type Column -->
-    <ng-container matColumnDef="type">
-        <th mat-header-cell *matHeaderCellDef> Type </th>
-        <td mat-cell *matCellDef="let element"> {{element.types}} </td>
-    </ng-container>
-
-    <!-- IsCaptured Column -->
-    <ng-container matColumnDef="captured">
-        <th mat-header-cell *matHeaderCellDef> Está capturado </th>
-        <td mat-cell *matCellDef="let element"> {{element.captured ? 'Yes' : 'No'}} </td>
-    </ng-container>
-
-    <!-- Options Column -->
-    <ng-container matColumnDef="options">
-        <th mat-header-cell *matHeaderCellDef> Opciones </th>
-        <td mat-cell *matCellDef="let element">
-            <!-- You can add buttons or links here for options -->
-            <!-- <button (click)="editElement(element)">Edit</button> -->
-            <!-- <button (click)="deleteElement(element)">Delete</button> -->
-        </td>
-    </ng-container>
-
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-</table>
+<section class="w-full max-h-[40rem] p-4 overflow-auto text-slate-700 selection:bg-slate-700 selection:text-white">
+    <table 
+        mat-table 
+        [dataSource]="data" 
+        class="mat-elevation-z8 w-full"
+    >
+    
+        <!-- Id Column -->
+        <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef> Id. </th>
+            <td mat-cell *matCellDef="let element; let i = index"> {{ i + 1 }} </td>
+        </ng-container>
+    
+        <!-- Name Column -->
+        <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef> Name </th>
+            <td mat-cell *matCellDef="let element"> {{capitalizeFirstChar(element.name)}} </td>
+        </ng-container>
+    
+        <!-- Type Column -->
+        <ng-container matColumnDef="type">
+            <th mat-header-cell *matHeaderCellDef> Type </th>
+            <td mat-cell *matCellDef="let element"> {{element.types}} </td>
+        </ng-container>
+    
+        <!-- IsCaptured Column -->
+        <ng-container matColumnDef="captured">
+            <th mat-header-cell *matHeaderCellDef> Está capturado </th>
+            <td mat-cell *matCellDef="let element"> {{element.captured ? 'Si' : 'No'}} </td>
+        </ng-container>
+    
+        <!-- Options Column -->
+        <ng-container matColumnDef="options">
+            <th mat-header-cell *matHeaderCellDef> Opciones </th>
+            <td mat-cell *matCellDef="let element">
+                <!-- You can add buttons or links here for options -->
+                 <div class="w-full flex flex-wrap items-center justify-start gap-1 text-slate-700">
+                     <button 
+                        (click)="capture(element)"
+                        title="Capturar {{element.name}}"
+                        *ngIf="!element.captured"
+                    >
+                         <mat-icon>
+                             do_not_disturb_on    
+                         </mat-icon>
+                     </button>
+                     <button 
+                        (click)="destroy(element)"
+                        title="Quitar {{element.name}}"
+                        *ngIf="element.captured"
+                     >
+                         <mat-icon>
+                             delete
+                         </mat-icon>
+                     </button>
+                 </div>
+            </td>
+        </ng-container>
+    
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <mat-paginator
+        [length]="totalItems" 
+        [pageSize]="pageSize" 
+        (page)="onPageChange($event)"
+    />
+</section>

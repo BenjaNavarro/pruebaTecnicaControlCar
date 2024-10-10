@@ -17,13 +17,14 @@ class ApplicationController < ActionController::Base
   def capture
     pokemon_name = params[:name]
     capture_pokemon(pokemon_name)
-    render json: { message: "#{pokemon_name} captured!", captured_pokemons: captured_pokemons }, status: :ok
+    render json: { message: "#{pokemon_name} captured!", data: @@pokemons }, status: :ok
   end
 
   def capture_pokemon(pokemon_name)
     return if @@captured_pokemons.size >= 6
 
     pokemon = @@pokemons.find { |p| p[:name] == pokemon_name }
+
     if pokemon && !pokemon[:captured]
       pokemon[:captured] = true
       @@captured_pokemons << pokemon_name
@@ -93,5 +94,19 @@ class ApplicationController < ActionController::Base
     else
       {} # Return an empty hash or handle errors as needed
     end
+  end
+
+  def search_pokemon
+    # Access query parameters
+    pokemon_name = params[:name]
+    pokemon_type = params[:type]
+
+    # Find Pokémon by name or type
+    result = @@pokemons.select do |pokemon|
+      (pokemon_name.nil? || pokemon[:name].downcase == pokemon_name.downcase) &&
+      (pokemon_type.nil? || pokemon[:types].include?(pokemon_type.downcase))
+    end
+
+    render json: { result: result }, status: :ok
   end
 end

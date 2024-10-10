@@ -2,3 +2,34 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+    .scrollbar-thin {
+        scrollbar-width: thin;
+        scrollbar-color: #334155 #F3F4F6;
+    }
+    
+    .scrollbar-thin::-webkit-scrollbar {
+        @apply w-1 h-1 
+    }
+
+    .scrollbar-thin::-webkit-scrollbar-track {
+        @apply bg-gray-400
+    }
+
+    .scrollbar-thin::-webkit-scrollbar-thumb {
+        @apply bg-slate-700 rounded-full border-2 border-slate-600
+    }
+
+    .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+        @apply bg-slate-600
+    }
+
+    .scrollbar-thin::-webkit-scrollbar-thumb:active {
+        @apply bg-slate-600
+    }
+
+    * {
+        @apply scrollbar-thin;
+    }
+}

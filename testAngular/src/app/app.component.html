@@ -1,7 +1,15 @@
-<main class="w-full flex flex-col">
+<main class="w-full flex flex-col h-full min-h-full max-h-full">
   <app-header />
-  <app-search-bar/>
-  <app-table [data]="data"/>
+  <app-search-bar
+    (searchQuery)="searchToAPI($event)"
+  />
+  <app-table
+    [data]="paginatedData" 
+    [totalItems]="totalItems"
+    [pageSize]="pageSize" 
+    [currentPage]="currentPage"
+    (pageChange)="onPageChange($event)"
+  />
   <app-footer/>
 </main>
 

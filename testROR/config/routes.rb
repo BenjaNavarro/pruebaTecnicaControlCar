@@ -17,6 +17,8 @@ Rails.application.routes.draw do
 
   get "captured" => "application#captured", as: :app_captured
 
+  get "search_pokemon" => "application#search_pokemon", as: :search_pokemon
+
   # # Defines the root path route ("/")
   root "application#import" # or root "posts#index" if you want a different root
 end
