@@ -33,7 +33,7 @@ export class AppComponent implements OnInit{
     this.apiService.getData().subscribe({
       next: (response: any) => {
         console.log(response);  // Handle successful response
-        this.data = response;
+        this.data = response.data;
         this.loading = false; // Set loading to false after data is fetched
       },
       error: (error: unknown) => {

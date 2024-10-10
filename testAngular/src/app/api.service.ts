@@ -16,9 +16,4 @@ export class ApiService {
   getData(): Observable<any> {
     return this.http.get(`${this.apiUrl.apiUrl}/index`);
   }
-
-  // Method to make POST request
-  postData(data: any): Observable<any> {
-    return this.http.post(this.apiUrl.apiUrl, data);
-  }
 }

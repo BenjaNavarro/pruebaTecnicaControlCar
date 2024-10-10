@@ -18,8 +18,9 @@ declare interface PokemonElement {
 
 export class TableComponent {
   @Input() data: any;
-  displayedColumns: string[] = ['id', 'name', 'type', 'captured', 'options'];
-  // dataSource = [
-  //   this.data
-  // ];
+  displayedColumns: string[] = ['name', 'type', 'captured', 'options'];
+
+  log = (data: any) => console.log({data});
+
+  
 }
