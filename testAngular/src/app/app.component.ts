@@ -70,6 +70,8 @@ export class AppComponent implements OnInit {
   }
 
   onDataUpdated(newData: any[]) {
+    console.log({newData});
+    
     this.data = newData;
     this.totalItems = newData.length; // Update the total number of items
     this.updatePaginatedData(); // Update paginated data
@@ -82,10 +84,12 @@ export class AppComponent implements OnInit {
     this.loading = true;
     this.apiService.search(searchString).subscribe({
       next: (response: any) => {
+        console.log({response});
+        
         if(response.data){
-          this.data = response.data;
-          this.totalItems = this.data.length;
-          this.updatePaginatedData(); // Call this to set paginated data
+          console.log({data: response.data});
+          this.onDataUpdated(response.data);
+          this.updatePaginatedData();
         }
       },
       error: (error: any) => {

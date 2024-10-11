@@ -21,14 +21,30 @@ class ApplicationController < ActionController::Base
   end
 
   def capture_pokemon(pokemon_name)
-    return if @@captured_pokemons.size >= 6
+    # Initialize captured_pokemons array if it doesn't exist
+    @@captured_pokemons ||= []
 
-    pokemon = @@pokemons.find { |p| p[:name] == pokemon_name }
+    # Find the Pokémon by name in the global @@pokemons array
+    pokemon = @@pokemons.find { |p| p[:name].downcase == pokemon_name.downcase }
 
-    if pokemon && !pokemon[:captured]
-      pokemon[:captured] = true
-      @@captured_pokemons << pokemon_name
+    if pokemon.nil?
+      render json: { message: "Pokémon not found" }, status: :not_found
+      return
     end
+
+    # If the captured list already has 6 Pokémon, remove the first one
+    if @@captured_pokemons.length >= 6
+      # Remove the first Pokémon from captured list
+      first_pokemon = @@captured_pokemons.shift
+
+      # Find and update the 'captured' state of the first Pokémon in the @@pokemons array
+      pokemon_to_update = @@pokemons.find { |p| p[:name].downcase == first_pokemon[:name].downcase }
+      pokemon_to_update[:captured] = false if pokemon_to_update
+    end
+
+    # Add the new Pokémon to the captured list and mark it as captured
+    @@captured_pokemons.push(pokemon)
+    pokemon[:captured] = true
   end
 
   def captured_pokemons
@@ -106,7 +122,7 @@ class ApplicationController < ActionController::Base
 
     result = @@pokemons.select do |pokemon|
       (pokemon[:name].downcase.include?(search.downcase)) ||
-      (pokemon[:types].any? { |type| type.downcase.include?(search.downcase) })
+      pokemon[:types].any? { |type| type.downcase.include?(search.downcase) }
     end
 
     render json: { message: "search", test: { search: search }, data: result }, status: :ok
