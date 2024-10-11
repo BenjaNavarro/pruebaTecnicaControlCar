@@ -63,7 +63,6 @@ export class AppComponent implements OnInit {
   }
 
   onPageChange(pageEvent: PageEvent) {
-    console.log({pageEvent});
     
     this.currentPage = pageEvent.pageIndex + 1; // Page index is zero-based in the paginator
     this.pageSize = pageEvent.pageSize;
@@ -83,7 +82,6 @@ export class AppComponent implements OnInit {
     this.loading = true;
     this.apiService.search(searchString).subscribe({
       next: (response: any) => {
-        console.log({response});
         if(response.data){
           this.data = response.data;
           this.totalItems = this.data.length;
@@ -91,7 +89,7 @@ export class AppComponent implements OnInit {
         }
       },
       error: (error: any) => {
-        console.log({error});
+        console.error('Search error:', error);
         this.loading = false;
       },
       complete: () => {
