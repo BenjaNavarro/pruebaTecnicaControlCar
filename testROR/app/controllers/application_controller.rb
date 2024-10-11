@@ -42,7 +42,7 @@ class ApplicationController < ActionController::Base
   def destroy
     pokemon_name = params[:name]
     released_pokemon(pokemon_name)
-    render json: { message: "#{pokemon_name} released!", captured_pokemons: captured_pokemons }, status: :ok
+    render json: { message: "#{pokemon_name} released!", data: @@pokemons }, status: :ok
   end
 
   def released_pokemon(pokemon_name)
@@ -97,16 +97,18 @@ class ApplicationController < ActionController::Base
   end
 
   def search_pokemon
-    # Access query parameters
-    pokemon_name = params[:name]
-    pokemon_type = params[:type]
+    search = params[:search]
 
-    # Find Pokémon by name or type
-    result = @@pokemons.select do |pokemon|
-      (pokemon_name.nil? || pokemon[:name].downcase == pokemon_name.downcase) &&
-      (pokemon_type.nil? || pokemon[:types].include?(pokemon_type.downcase))
+    if search.nil?
+      render json: { message: "vacío", data: [] }, status: :ok
+      return
     end
 
-    render json: { result: result }, status: :ok
+    result = @@pokemons.select do |pokemon|
+      (pokemon[:name].downcase.include?(search.downcase)) ||
+      (pokemon[:types].any? { |type| type.downcase.include?(search.downcase) })
+    end
+
+    render json: { message: "search", test: { search: search }, data: result }, status: :ok
   end
 end

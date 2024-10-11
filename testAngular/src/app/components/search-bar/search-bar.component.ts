@@ -1,5 +1,6 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { MatInput,  } from '@angular/material/input';
+import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -7,7 +8,8 @@ import { FormsModule } from '@angular/forms';
   standalone: true,
   imports: [
     MatInput,
-    FormsModule
+    FormsModule,
+    MatInputModule
   ],
   templateUrl: './search-bar.component.html',
   styleUrl: './search-bar.component.css'

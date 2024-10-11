@@ -36,7 +36,7 @@ export class ApiService {
 
   destroy(name: string): Observable<any> {
     return this.http.get(
-      `${this.apiUrl.apiUrl}/`,
+      `${this.apiUrl.apiUrl}/destroy`,
       {
         headers: { 'Content-Type': 'application/json' },
         params: {
@@ -47,6 +47,7 @@ export class ApiService {
   }
 
   search(searchString: string): Observable<any> {
+    
     return this.http.get(
       `${this.apiUrl.apiUrl}/search_pokemon`,
       {
